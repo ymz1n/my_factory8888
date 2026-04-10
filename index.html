@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>昱鋐實業股份有限公司 | YU HONG STEEL INDUSTRIAL CORP.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* 英雄區背景 */
+        .hero-section {
+            background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.85)), 
+                        url('05.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        /* 網站背景圖 */
+        .bg-custom-04 {
+            position: relative;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), 
+                            url('04.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .metal-texture {
+            background-color: #f8fafc;
+            background-image: radial-gradient(#cbd5e1 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+        }
+
+        .nav-blur {
+            backdrop-filter: blur(8px);
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* 投影片容器 */
+        .slider-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            background-color: #f1f5f9;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: default;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 10;
+        }
+
+        .slide img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        /* 放大鏡效果樣式 */
+        .zoom-active {
+            cursor: crosshair !important;
+        }
+        
+        .magnifier-lens {
+            position: absolute;
+            width: 180px;
+            height: 180px;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            pointer-events: none;
+            display: none;
+            z-index: 50;
+            background-repeat: no-repeat;
+            background-color: #fff;
+        }
+
+        /* 翻頁按鈕 */
+        .nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 30;
+            background: rgba(255, 255, 255, 0.7);
+            color: #1e293b;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .nav-arrow:hover {
+            background: #fff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .industrial-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .status-open { color: #10b981; }
+        .status-closed { color: #ef4444; }
+
+        .lang-btn {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .lang-btn.active {
+            color: #1d4ed8;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="text-slate-800 bg-slate-50">
+
+    <!-- 導覽列 -->
+    <nav class="fixed w-full z-50 nav-blur border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-20 items-center">
+                <div class="flex-shrink-0 flex flex-col">
+                    <span class="text-2xl font-bold text-slate-900 tracking-wider" data-i18n="nav-brand">昱鋐實業</span>
+                    <span class="text-xs text-slate-500 uppercase font-medium">YU HONG STEEL</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <div class="flex items-baseline space-x-8">
+                        <a href="#about" class="text-slate-600 hover:text-blue-700 px-3 py-2 font-medium transition-colors" data-i18n="nav-about">關於昱鋐</a>
+                        <a href="#news" class="text-slate-600 hover:text-blue-700 px-3 py-2 font-medium transition-colors" data-i18n="nav-news">媒體報導</a>
+                        <a href="#company-info" class="text-slate-600 hover:text-blue-700 px-3 py-2 font-medium transition-colors" data-i18n="nav-info">基本資料</a>
+                        <a href="#contact" class="bg-slate-900 text-white px-5 py-2 rounded-md hover:bg-blue-800 transition-all text-sm" data-i18n="nav-contact">聯絡我們</a>
+                        
+                        <div class="flex items-center space-x-2 border-l border-slate-300 pl-6 ml-4 text-sm">
+                            <span onclick="switchLang('zh')" id="btn-zh" class="lang-btn active">中</span>
+                            <span class="text-slate-300">/</span>
+                            <span onclick="switchLang('en')" id="btn-en" class="lang-btn">EN</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄形象區 -->
+    <section class="hero-section h-[75vh] flex items-center justify-center text-white pt-20">
+        <div class="max-w-5xl mx-auto px-4 text-center">
+            <h2 class="text-sm md:text-xl font-light tracking-[0.5em] mb-4 opacity-90 uppercase">Yu Hong Steel Industrial Corp.</h2>
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 tracking-tight drop-shadow-lg" data-i18n="hero-title">昱鋐實業股份有限公司</h1>
+            <div class="w-24 h-1 bg-blue-500 mx-auto mb-8 shadow-lg"></div>
+            <p class="text-slate-100 text-lg md:text-xl max-w-4xl mx-auto leading-relaxed font-light drop-shadow-md" data-i18n="hero-desc">
+                昱鋐實業是一家專注於鋼管製造與相關金屬加工技術，提供高品質工業用鋼管產品的製造企業。
+            </p>
+        </div>
+    </section>
+
+    <!-- 關於我們區塊 -->
+    <section id="about" class="py-24 metal-texture border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <h2 class="text-4xl font-bold text-slate-900 border-l-4 border-blue-600 pl-6" data-i18n="about-title">關於昱鋐</h2>
+                    <div class="text-slate-600 leading-loose text-lg space-y-4">
+                        <p data-i18n="about-desc">
+                            本公司專注於 <strong class="text-blue-700">高品質鋼管製造</strong>，憑藉深厚的生產經驗與嚴格的品質控點，為客戶提供最穩定的工業基礎建材。我們致力於技術創新與友善職場，傳承專業工藝。
+                        </p>
+                    </div>
+                    <div class="pt-4 flex flex-wrap gap-4">
+                        <span class="bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-bold border border-blue-100" data-i18n="tag-1">高品質鋼管製造</span>
+                        <span class="bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-bold border border-blue-100" data-i18n="tag-2">專業生產技術</span>
+                    </div>
+                </div>
+
+                <!-- 投影片區 -->
+                <div class="relative">
+                    <div id="slider-box" class="slider-container group">
+                        <!-- 翻頁按鈕 (左) -->
+                        <div onclick="prevSlide()" class="nav-arrow left-4">
+                            <i class="fas fa-chevron-left"></i>
+                        </div>
+                        <!-- 翻頁按鈕 (右) -->
+                        <div onclick="nextSlide()" class="nav-arrow right-4">
+                            <i class="fas fa-chevron-right"></i>
+                        </div>
+
+                        <!-- 投影片內容：11-13.png + 01-05.jpg -->
+                        <div class="slide active">
+                            <img src="11.png" alt="Gallery 11" onerror="this.src='https://placehold.co/800x600?text=Image+11.png'">
+                            <div class="absolute bottom-6 left-6 bg-slate-900/80 text-white px-5 py-2 rounded-lg text-sm font-bold backdrop-blur-sm z-20">
+                                <i class="fas fa-images mr-2"></i><span data-i18n="slide-1">廠區展示 01</span>
+                            </div>
+                        </div>
+                        <div class="slide">
+                            <img src="12.png" alt="Gallery 12" onerror="this.src='https://placehold.co/800x600?text=Image+12.png'">
+                            <div class="absolute bottom-6 left-6 bg-slate-900/80 text-white px-5 py-2 rounded-lg text-sm font-bold backdrop-blur-sm z-20">
+                                <i class="fas fa-images mr-2"></i><span data-i18n="slide-2">廠區展示 02</span>
+                            </div>
+                        </div>
+                        <div class="slide">
+                            <img src="13.png" alt="Gallery 13" onerror="this.src='https://placehold.co/800x600?text=Image+13.png'">
+                            <div class="absolute bottom-6 left-6 bg-slate-900/80 text-white px-5 py-2 rounded-lg text-sm font-bold backdrop-blur-sm z-20">
+                                <i class="fas fa-images mr-2"></i><span data-i18n="slide-3">廠區展示 03</span>
+                            </div>
+                        </div>
+                        <div class="slide">
+                            <img src="01.jpg" alt="Gallery 01" onerror="this.src='https://placehold.co/800x600?text=Image+01.jpg'">
+                            <div class="absolute bottom-6 left-6 bg-slate-900/80 text-white px-5 py-2 rounded-lg text-sm font-bold backdrop-blur-sm z-20">
+                                <i class="fas fa-images mr-2"></i><span data-i18n="slide-4">廠區展示 04</span>
+                            </div>
+                        </div>
+                        <div class="slide">
+                            <img src="02.jpg" alt="Gallery 02" onerror="this.src='https://placehold.co/800x600?text=Image+02.jpg'">
+                            <div class="absolute bottom-6 left-6 bg-slate-900/80 text-white px-5 py-2 rounded-lg text-sm font-bold backdrop-blur-sm z-20">
+                                <i class="fas fa-images mr-2"></i><span data-i18n="slide-5">廠區展示 05</span>
+                            </div>
+                        </div>
+                        <div class="slide">
+                            <img src="03.jpg" alt="Gallery 03" onerror="this.src='https://placehold.co/800x600?text=Image+03.jpg'">
+                            <div class="absolute bottom-6 left-6 bg-slate-900/80 text-white px-5 py-2 rounded-lg text-sm font-bold backdrop-blur-sm z-20">
+                                <i class="fas fa-images mr-2"></i><span data-i18n="slide-6">廠區展示 06</span>
+                            </div>
+                        </div>
+                        <div class="slide">
+                            <img src="04.jpg" alt="Gallery 04" onerror="this.src='https://placehold.co/800x600?text=Image+04.jpg'">
+                            <div class="absolute bottom-6 left-6 bg-slate-900/80 text-white px-5 py-2 rounded-lg text-sm font-bold backdrop-blur-sm z-20">
+                                <i class="fas fa-images mr-2"></i><span data-i18n="slide-7">廠區展示 07</span>
+                            </div>
+                        </div>
+                        <div class="slide">
+                            <img src="05.jpg" alt="Gallery 05" onerror="this.src='https://placehold.co/800x600?text=Image+05.jpg'">
+                            <div class="absolute bottom-6 left-6 bg-slate-900/80 text-white px-5 py-2 rounded-lg text-sm font-bold backdrop-blur-sm z-20">
+                                <i class="fas fa-images mr-2"></i><span data-i18n="slide-8">廠區展示 08</span>
+                            </div>
+                        </div>
+                        
+                        <!-- 放大鏡元件 -->
+                        <div id="magnifier-lens" class="magnifier-lens"></div>
+
+                        <!-- 放大鏡控制按鈕 -->
+                        <button id="toggle-zoom" class="absolute bottom-6 right-16 z-30 bg-white text-slate-800 w-10 h-10 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                            <i id="zoom-icon" class="fas fa-search-plus"></i>
+                        </button>
+
+                        <div id="dot-container" class="absolute bottom-6 right-6 z-20 flex space-x-2">
+                            <!-- 指示圓點會自動由 JS 根據 slides 數量生成 -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 媒體報導 -->
+    <section id="news" class="py-24 bg-custom-04">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-slate-900" data-i18n="news-title">媒體相關報導</h2>
+                <div class="w-16 h-1 bg-blue-600 mx-auto mt-4"></div>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="industrial-card p-8 rounded-2xl hover:shadow-xl transition-all border border-slate-200">
+                    <div class="text-blue-600 text-xs font-bold mb-2 uppercase">Invest Taiwan</div>
+                    <h4 class="font-bold mb-4 text-slate-900 leading-snug" data-i18n="news-1-title">中高齡者及高齡者就業績優獎勵：昱鋐實業專訪</h4>
+                    <a href="https://investtaiwan.nat.gov.tw/showPage?lang=cht&search=11351n60" target="_blank" class="text-blue-600 text-sm font-bold hover:underline" data-i18n="news-link">查看報導 →</a>
+                </div>
+                <div class="industrial-card p-8 rounded-2xl hover:shadow-xl transition-all border border-slate-200">
+                    <div class="text-blue-600 text-xs font-bold mb-2 uppercase">Yahoo News</div>
+                    <h4 class="font-bold mb-4 text-slate-900 leading-snug" data-i18n="news-2-title">昱鋐進用中高齡員工 老臣回朝更賣力</h4>
+                    <a href="https://tw.news.yahoo.com/%E6%98%B1%E9%8B%90-%E9%80%B2%E7%94%A8%E4%B8%AD%E9%AB%98%E9%BD%A1%E5%93%A1%E5%B7%A5-%E8%80%81%E8%87%A3%E5%9B%9E%E6%9C%9D%E6%9B%B4%E8%B3%A3%E5%8A%9B-160000419.html" target="_blank" class="text-blue-600 text-sm font-bold hover:underline" data-i18n="news-link">查看報導 →</a>
+                </div>
+                <div class="industrial-card p-8 rounded-2xl hover:shadow-xl transition-all border border-slate-200">
+                    <div class="text-blue-600 text-xs font-bold mb-2 uppercase">China Times</div>
+                    <h4 class="font-bold mb-4 text-slate-900 leading-snug" data-i18n="news-3-title">老臣回朝、經驗傳承：昱鋐實業經營之道</h4>
+                    <a href="https://www.chinatimes.com/realtimenews/20170723002464-260405?chdtv" target="_blank" class="text-blue-600 text-sm font-bold hover:underline" data-i18n="news-link">查看報導 →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 公司基本資料 -->
+    <section id="company-info" class="py-24 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div class="md:col-span-1 text-center md:text-left">
+                    <h3 class="text-xl font-bold mb-4 uppercase tracking-widest text-slate-400">Operating Status</h3>
+                    <div id="status-indicator" class="text-lg font-bold">載入中...</div>
+                </div>
+                <div class="md:col-span-3 grid sm:grid-cols-2 gap-8">
+                    <div>
+                        <p class="text-slate-400 text-sm mb-1 uppercase" data-i18n="info-tax-id">統一編號</p>
+                        <p class="text-xl font-bold">13059524</p>
+                    </div>
+                    <div>
+                        <p class="text-slate-400 text-sm mb-1 uppercase" data-i18n="info-owner">負責人</p>
+                        <p class="text-xl font-bold" data-i18n="info-owner-name">吳俊廷</p>
+                    </div>
+                    <div class="sm:col-span-2">
+                        <p class="text-slate-400 text-sm mb-1 uppercase" data-i18n="info-address-label">廠址</p>
+                        <p class="text-lg" data-i18n="info-address">屏東縣枋寮鄉東海村臨海路二段112號</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 聯絡我們 -->
+    <section id="contact" class="py-24 bg-custom-04 border-t border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+            <h2 class="text-3xl font-bold mb-8 text-slate-900" data-i18n="contact-title">與我們聯繫</h2>
+            <div class="bg-white/80 backdrop-blur-md p-10 rounded-3xl shadow-2xl border border-white/50 grid md:grid-cols-3 gap-8">
+                <div class="group">
+                    <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-600 transition-colors">
+                        <i class="fas fa-phone-alt text-blue-600 group-hover:text-white text-xl"></i>
+                    </div>
+                    <p class="font-bold text-slate-900" data-i18n="contact-phone">電話洽詢</p>
+                    <a href="tel:08-8666699" class="text-slate-600 hover:text-blue-700 font-medium transition-colors">08-8666699</a>
+                </div>
+                <div class="group">
+                    <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-600 transition-colors">
+                        <i class="fas fa-print text-blue-600 group-hover:text-white text-xl"></i>
+                    </div>
+                    <p class="font-bold text-slate-900" data-i18n="contact-fax">傳真號碼</p>
+                    <p class="text-slate-600">08-8667989</p>
+                </div>
+                <a href="https://www.google.com/maps/search/?api=1&query=屏東縣枋寮鄉臨海路二段112號" target="_blank" class="group block">
+                    <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-600 transition-colors">
+                        <i class="fas fa-map-marker-alt text-blue-600 group-hover:text-white text-xl"></i>
+                    </div>
+                    <p class="font-bold text-slate-900" data-i18n="contact-map">廠址地圖</p>
+                    <p class="text-slate-600 text-sm leading-snug group-hover:text-blue-700 transition-colors" data-i18n="contact-address-short">
+                        屏東縣枋寮鄉<br>臨海路二段112號
+                    </p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-950 text-slate-500 py-12 text-center text-sm">
+        <p class="text-white font-bold text-lg mb-2" data-i18n="footer-brand">昱鋐實業股份有限公司</p>
+        <p class="uppercase tracking-widest mb-4">Yu Hong Steel Industrial Corp.</p>
+        <p>© 2026 Yu Hong Steel Industrial Corp. <span data-i18n="footer-rights">All Rights Reserved.</span></p>
+    </footer>
+
+    <script>
+        // 翻譯資源
+        const translations = {
+            zh: {
+                "nav-brand": "昱鋐實業", "nav-about": "關於昱鋐", "nav-news": "媒體報導", "nav-info": "基本資料", "nav-contact": "聯絡我們",
+                "hero-title": "昱鋐實業股份有限公司", "hero-desc": "昱鋐實業是一家專注於鋼管製造與相關金屬加工技術，提供高品質工業用鋼管產品的製造企業。",
+                "about-title": "關於昱鋐", "about-desc": "本公司專注於 <strong class='text-blue-700'>高品質鋼管製造</strong>，憑藉深厚的生產經驗與嚴格的品質控點，為客戶提供最穩定的工業基礎建材。",
+                "tag-1": "高品質鋼管製造", "tag-2": "專業生產技術", "slide-1": "廠區展示 01", "slide-2": "廠區展示 02", "slide-3": "廠區展示 03", "slide-4": "廠區展示 04", "slide-5": "廠區展示 05", "slide-6": "廠區展示 06", "slide-7": "廠區展示 07", "slide-8": "廠區展示 08",
+                "news-title": "媒體相關報導", "news-link": "查看報導 →", "info-tax-id": "統一編號", "info-owner": "負責人", "info-owner-name": "吳俊廷", "info-address-label": "廠址", "info-address": "屏東縣枋寮鄉東海村臨海路二段112號",
+                "contact-title": "與我們聯繫", "contact-phone": "電話洽詢", "contact-fax": "傳真號碼", "contact-map": "廠址地圖", "contact-address-short": "屏東縣枋寮鄉<br>臨海路二段112號",
+                "footer-brand": "昱鋐實業股份有限公司", "footer-rights": "版權所有", "status-open": "● 營業中", "status-closed": "○ 休息中"
+            },
+            en: {
+                "nav-brand": "Yu Hong Steel", "nav-about": "About", "nav-news": "News", "nav-info": "Company Info", "nav-contact": "Contact",
+                "hero-title": "YU HONG STEEL INDUSTRIAL CORP.", "hero-desc": "Yu Hong Steel is a manufacturing enterprise focusing on steel pipe production and related metal processing technologies.",
+                "about-title": "About Us", "about-desc": "We specialize in <strong class='text-blue-700'>High-Quality Steel Pipe Manufacturing</strong> with strict quality control and professional experience.",
+                "tag-1": "High-Quality Manufacturing", "tag-2": "Professional Technology", "slide-1": "Factory Display 01", "slide-2": "Factory Display 02", "slide-3": "Factory Display 03", "slide-4": "Factory Display 04", "slide-5": "Factory Display 05", "slide-6": "Factory Display 06", "slide-7": "Factory Display 07", "slide-8": "Factory Display 08",
+                "news-title": "Media Coverage", "news-link": "Read More →", "info-tax-id": "Tax ID", "info-owner": "Person in Charge", "info-owner-name": "Wu Chun-Ting", "info-address-label": "Factory Address", "info-address": "No. 112, Sec. 2, Linhai Rd., Donghai Village, Fangliao Township, Pingtung County",
+                "contact-title": "Contact Us", "contact-phone": "Phone", "contact-fax": "Fax", "contact-map": "Map", "contact-address-short": "No. 112, Sec. 2, Linhai Rd.<br>Fangliao Township, Pingtung",
+                "footer-brand": "YU HONG STEEL INDUSTRIAL CORP.", "footer-rights": "All Rights Reserved", "status-open": "● Open Now", "status-closed": "○ Closed Now"
+            }
+        };
+
+        let currentLang = 'zh';
+
+        function switchLang(lang) {
+            currentLang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) el.innerHTML = translations[lang][key];
+            });
+            document.getElementById('btn-zh').classList.toggle('active', lang === 'zh');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            updateBusinessStatus();
+        }
+
+        // 投影片邏輯
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const dotContainer = document.getElementById('dot-container');
+        
+        // 動態生成 Dots
+        slides.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.className = `dot w-2 h-2 rounded-full bg-white transition-opacity ${i === 0 ? 'opacity-100' : 'opacity-40'}`;
+            dotContainer.appendChild(dot);
+        });
+        const dots = document.querySelectorAll('.dot');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if(dots[i]) dots[i].classList.replace('opacity-100', 'opacity-40');
+            });
+            slides[index].classList.add('active');
+            if(dots[index]) dots[index].classList.replace('opacity-40', 'opacity-100');
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+            resetTimer();
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+            resetTimer();
+        }
+
+        let slideTimer = setInterval(nextSlide, 5000);
+        function resetTimer() {
+            clearInterval(slideTimer);
+            if (!isZoomEnabled) slideTimer = setInterval(nextSlide, 5000);
+        }
+
+        // 放大鏡邏輯
+        let isZoomEnabled = false;
+        const toggleBtn = document.getElementById('toggle-zoom');
+        const zoomIcon = document.getElementById('zoom-icon');
+        const sliderBox = document.getElementById('slider-box');
+        const lens = document.getElementById('magnifier-lens');
+
+        toggleBtn.addEventListener('click', () => {
+            isZoomEnabled = !isZoomEnabled;
+            if (isZoomEnabled) {
+                zoomIcon.className = "fas fa-times";
+                sliderBox.classList.add('zoom-active');
+                clearInterval(slideTimer);
+            } else {
+                zoomIcon.className = "fas fa-search-plus";
+                sliderBox.classList.remove('zoom-active');
+                lens.style.display = 'none';
+                slideTimer = setInterval(nextSlide, 5000);
+            }
+        });
+
+        sliderBox.addEventListener('mousemove', (e) => {
+            if (!isZoomEnabled) return;
+            const rect = sliderBox.getBoundingClientRect();
+            const activeSlide = slides[currentSlide];
+            const img = activeSlide.querySelector('img');
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            if (x < 0 || y < 0 || x > rect.width || y > rect.height) {
+                lens.style.display = 'none';
+                return;
+            }
+            lens.style.display = 'block';
+            lens.style.left = `${x - lens.offsetWidth / 2}px`;
+            lens.style.top = `${y - lens.offsetHeight / 2}px`;
+            const zoomLevel = 2.5;
+            lens.style.backgroundImage = `url('${img.src}')`;
+            lens.style.backgroundSize = `${rect.width * zoomLevel}px ${rect.height * zoomLevel}px`;
+            const bgX = (x * zoomLevel) - (lens.offsetWidth / 2);
+            const bgY = (y * zoomLevel) - (lens.offsetHeight / 2);
+            lens.style.backgroundPosition = `-${bgX}px -${bgY}px`;
+        });
+
+        sliderBox.addEventListener('mouseleave', () => { lens.style.display = 'none'; });
+
+        function updateBusinessStatus() {
+            const now = new Date();
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const taiwanTime = new Date(utc + (3600000 * 8)); 
+            const day = taiwanTime.getDay(), hour = taiwanTime.getHours();
+            const statusDiv = document.getElementById('status-indicator');
+            let isOpen = (day >= 1 && day <= 5) && (hour >= 8 && hour < 17);
+            const statusText = isOpen ? translations[currentLang]["status-open"] : translations[currentLang]["status-closed"];
+            statusDiv.innerHTML = `<span class="${isOpen ? 'status-open' : 'status-closed'}">${statusText}</span>`;
+        }
+
+        window.onload = function() {
+            updateBusinessStatus();
+            setInterval(updateBusinessStatus, 60000);
+        }
+    </script>
+</body>
+</html>
