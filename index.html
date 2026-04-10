@@ -210,21 +210,21 @@
                             <i class="fas fa-chevron-right"></i>
                         </div>
 
-                        <!-- 投影片內容：11-13.png + 01-05.jpg -->
+                        <!-- 投影片內容：11-13.jpg + 01-05.jpg (共 8 張) -->
                         <div class="slide active">
-                            <img src="11.png" alt="Gallery 11" onerror="this.src='https://placehold.co/800x600?text=Image+11.png'">
+                            <img src="11.jpg" alt="Gallery 11" onerror="this.src='https://placehold.co/800x600?text=Image+11.jpg'">
                             <div class="absolute bottom-6 left-6 bg-slate-900/80 text-white px-5 py-2 rounded-lg text-sm font-bold backdrop-blur-sm z-20">
                                 <i class="fas fa-images mr-2"></i><span data-i18n="slide-1">廠區展示 01</span>
                             </div>
                         </div>
                         <div class="slide">
-                            <img src="12.png" alt="Gallery 12" onerror="this.src='https://placehold.co/800x600?text=Image+12.png'">
+                            <img src="12.jpg" alt="Gallery 12" onerror="this.src='https://placehold.co/800x600?text=Image+12.jpg'">
                             <div class="absolute bottom-6 left-6 bg-slate-900/80 text-white px-5 py-2 rounded-lg text-sm font-bold backdrop-blur-sm z-20">
                                 <i class="fas fa-images mr-2"></i><span data-i18n="slide-2">廠區展示 02</span>
                             </div>
                         </div>
                         <div class="slide">
-                            <img src="13.png" alt="Gallery 13" onerror="this.src='https://placehold.co/800x600?text=Image+13.png'">
+                            <img src="13.jpg" alt="Gallery 13" onerror="this.src='https://placehold.co/800x600?text=Image+13.jpg'">
                             <div class="absolute bottom-6 left-6 bg-slate-900/80 text-white px-5 py-2 rounded-lg text-sm font-bold backdrop-blur-sm z-20">
                                 <i class="fas fa-images mr-2"></i><span data-i18n="slide-3">廠區展示 03</span>
                             </div>
@@ -269,7 +269,7 @@
                         </button>
 
                         <div id="dot-container" class="absolute bottom-6 right-6 z-20 flex space-x-2">
-                            <!-- 指示圓點會自動由 JS 根據 slides 數量生成 -->
+                            <!-- 由 JS 生成圓點 -->
                         </div>
                     </div>
                 </div>
@@ -409,14 +409,14 @@
         const slides = document.querySelectorAll('.slide');
         const dotContainer = document.getElementById('dot-container');
         
-        // 動態生成 Dots
+        // 生成 Dots
         slides.forEach((_, i) => {
             const dot = document.createElement('div');
             dot.className = `dot w-2 h-2 rounded-full bg-white transition-opacity ${i === 0 ? 'opacity-100' : 'opacity-40'}`;
             dotContainer.appendChild(dot);
         });
         const dots = document.querySelectorAll('.dot');
-
+        
         function showSlide(index) {
             slides.forEach((slide, i) => {
                 slide.classList.remove('active');
